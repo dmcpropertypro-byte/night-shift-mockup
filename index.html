@@ -28,7 +28,7 @@
   --btn-ink:#1c1812;
   --brand-mark-bg:#1c1812;
   --day-display:block; --night-display:none;
-  --nav-bg:rgba(250,247,240,0.96); --nav-line:rgba(35,28,16,0.18); --nav-ink:#2a251c; --nav-ink-strong:#1c1812;
+  --nav-bg:linear-gradient(180deg,#132338,#0f1d30); --nav-line:rgba(212,184,122,0.45); --nav-ink:#d9dfe9; --nav-ink-strong:#ffffff; --nav-logo-ring:rgba(240,220,168,0.5);
   --school-bg:#0f1f2e; --school-bg-2:#16304a; --school-ink:#f3efe6; --school-ink-2:#c9d1dc; --school-line:rgba(240,220,168,0.22); --school-accent:#f0dca8; --school-gift:rgba(255,255,255,0.04); --school-glow:rgba(212,184,122,0.22);
   color-scheme:light;
 }
@@ -47,7 +47,7 @@
     --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
     --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
     --day-display:none; --night-display:block;
-    --nav-bg:rgba(8,14,28,0.94); --nav-line:rgba(212,184,122,0.28); --nav-ink:#e6e9f0; --nav-ink-strong:#ffffff;
+    --nav-bg:linear-gradient(180deg,#f7f1e3,#eee5d0); --nav-line:rgba(124,95,38,0.45); --nav-ink:#3a3222; --nav-ink-strong:#1c1812; --nav-logo-ring:rgba(124,95,38,0.5);
     --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
     color-scheme:dark;
   }
@@ -65,7 +65,7 @@
   --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
   --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
   --day-display:none; --night-display:block;
-  --nav-bg:rgba(8,14,28,0.94); --nav-line:rgba(212,184,122,0.28); --nav-ink:#e6e9f0; --nav-ink-strong:#ffffff;
+  --nav-bg:linear-gradient(180deg,#f7f1e3,#eee5d0); --nav-line:rgba(124,95,38,0.45); --nav-ink:#3a3222; --nav-ink-strong:#1c1812; --nav-logo-ring:rgba(124,95,38,0.5);
   --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
   color-scheme:dark;
 }
@@ -122,7 +122,7 @@ h1,h2,h3,.serif{
 .theme-switch button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 
 /* ---------- status strip ---------- */
-.strip{ border-bottom:1px solid var(--line); }
+.strip{ border-bottom:1px solid var(--line); background:var(--bg); }
 .strip .wrap{
   display:flex; justify-content:space-between; align-items:center; gap:20px; padding:12px 40px;
   font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-3); flex-wrap:wrap;
@@ -131,10 +131,10 @@ h1,h2,h3,.serif{
 .strip .live::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 20%,transparent), 0 0 14px var(--gold); }
 
 /* ---------- nav ---------- */
-header.site{ position:sticky; top:0; z-index:40; backdrop-filter:blur(18px) saturate(1.2); background:var(--nav-bg); border-bottom:1px solid var(--nav-line); box-shadow:0 10px 30px -18px rgba(2,6,20,.6); }
+header.site{ position:sticky; top:0; z-index:40; background:var(--nav-bg); border-bottom:1px solid var(--nav-line); box-shadow:0 18px 40px -22px rgba(2,6,20,.75); }
 .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 40px; gap:20px; }
 .brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; }
-.brand img{ width:46px; height:46px; border-radius:10px; object-fit:cover; border:1px solid var(--line-strong); box-shadow:0 8px 20px -10px rgba(0,0,0,.6); }
+.brand img{ width:46px; height:46px; border-radius:10px; object-fit:cover; border:1px solid var(--nav-logo-ring); box-shadow:0 8px 20px -10px rgba(0,0,0,.6); }
 .brand .name{ font-family:'Fraunces',serif; font-weight:400; font-size:19px; }
 .brand .name{ color:var(--nav-ink-strong); }
 .brand .name span{ color:var(--nav-ink); font-style:italic; font-weight:300; }
@@ -207,7 +207,7 @@ nav.links a:hover{ color:var(--gold); }
 @media (max-width:960px){ .float{ display:none; } .hero-stack .back-card{ display:none; } }
 
 /* ---------- fan deck (offers): start stacked, fan out on scroll ---------- */
-.fan-stage{ position:relative; height:260vh; }
+.fan-stage{ position:relative; height:300vh; }
 .fan-sticky{ position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; perspective:1600px; }
 .fan{ position:relative; width:100%; max-width:1100px; height:520px; transform-style:preserve-3d; }
 .fan .offer{ position:absolute; left:50%; top:50%; width:340px; height:500px; margin-left:-170px; margin-top:-250px; transform-origin:50% 120%; will-change:transform; backdrop-filter:none;
@@ -246,9 +246,9 @@ nav.links a:hover{ color:var(--gold); }
 
 
 /* ---------- 3D scroll carousel (services) ---------- */
-.carousel-stage{ position:relative; height:360vh; }
-.carousel-sticky{ position:sticky; top:0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; perspective:1600px; perspective-origin:50% 45%; }
-.ring{ position:relative; width:520px; height:600px; transform-style:preserve-3d; will-change:transform; }
+.carousel-stage{ position:relative; height:460vh; }
+.carousel-sticky{ position:sticky; top:0; height:100vh; padding-top:40px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; perspective:1400px; perspective-origin:50% 40%; }
+.ring{ position:relative; width:520px; height:600px; transform-style:preserve-3d; will-change:transform; transform:rotateX(6deg); }
 .ring .svc{
   position:absolute; inset:0; backface-visibility:visible; width:520px; height:600px; margin:0 !important; transition:none;
   backface-visibility:hidden; transform-style:preserve-3d; transition:filter .2s linear;
@@ -733,7 +733,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
         <span class="glare"></span>
       </div>
         </div>
-        <div class="fan-hud">Scroll — the three offers fan out</div>
+        <div class="fan-hud">Scroll — the offers deal out one at a time</div>
       </div>
     </div>
     <div class="founding">
@@ -888,22 +888,30 @@ footer.bottom nav a:hover{ color:var(--gold); }
   }
 
 
-  /* fan deck: cards start stacked, fan out into a row as you scroll */
+  /* fan deck: cards start stacked in the first slot and deal out one at a time */
   var fstage=document.querySelector('.fan-stage'), fan=document.querySelector('.offers.fan');
   if(fstage && fan && window.matchMedia('(min-width:901px)').matches){
     var fc=fan.querySelectorAll('.offer'), FN=fc.length;
     var ease=function(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; };
     function fanIt(){
       var r=fstage.getBoundingClientRect(), total=r.height-window.innerHeight;
-      var raw=Math.min(Math.max(-r.top/total,0),1), pr=ease(Math.min(raw/0.8,1));
-      var spread=Math.min(fan.clientWidth/FN, 380);
+      var raw=Math.min(Math.max(-r.top/total,0),1)*0.92;               /* finish before the stage ends */
+      var spread=Math.min(fan.clientWidth/FN, 380), left=-(FN-1)/2*spread;
+      /* deal order: top of stack (last card) goes first to the far slot, then the next */
+      var order=[2,1]; /* card index -> deal step */
       fc.forEach(function(el,i){
-        var c=i-(FN-1)/2;
-        var stackX=c*10, stackY=-i*8, stackR=c*3;
-        var fanX=c*spread, fanR=c*6*(1-raw);
-        var x=stackX+(fanX-stackX)*pr, y=stackY*(1-pr), rot=stackR+(fanR-stackR)*pr;
+        var step=order.indexOf(i);
+        var target=left+i*spread;
+        var x,y,rot,z;
+        if(step<0){ x=left; y=0; rot=-2; z=1; }                          /* base card stays in slot 1 */
+        else{
+          var w=0.42, start=step*w, pr=ease(Math.min(Math.max((raw-start)/w,0),1));
+          var restX=left+ (FN-1-step)*0 + (2-step)*7, restY=-(2-step)*8, restR=(2-step)*3;
+          x=restX+(target-restX)*pr; y=restY*(1-pr) - Math.sin(pr*Math.PI)*46; rot=restR*(1-pr)+Math.sin(pr*Math.PI)*(4);
+          z= pr<1 ? 20 : 5+i;
+        }
         el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) rotate('+rot.toFixed(2)+'deg)';
-        el.style.zIndex=String(i===1 ? 10 : 5+i);
+        el.style.zIndex=String(z);
       });
     }
     window.addEventListener('scroll',fanIt,{passive:true}); window.addEventListener('resize',fanIt); fanIt();
@@ -930,44 +938,51 @@ footer.bottom nav a:hover{ color:var(--gold); }
   }
 
 
-  /* 3D scroll carousel — coverflow with snap-lock so the front card is always clickable */
+  /* 3D scroll carousel — each card dwells centered (popping toward you), then floats away as the next arrives */
   var stage=document.querySelector('.carousel-stage'), ring=document.querySelector('.ring');
   if(stage && ring && window.matchMedia('(min-width:861px)').matches){
-    var svcs=ring.querySelectorAll('.svc'), N=svcs.length, STEP=52, R=720, names=['Knowledge','Capture','Automate','Brand'];
+    var svcs=ring.querySelectorAll('.svc'), N=svcs.length, STEP=58, R=760, DWELL=0.55, names=['Knowledge','Capture','Automate','Brand'];
     var idxEl=document.getElementById('carIdx'), barEl=document.getElementById('carBar'), nameEl=document.getElementById('carName');
     var snapTimer=null, snapping=false;
+    var ease=function(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; };
     function stageTotal(){ return stage.offsetHeight-window.innerHeight; }
     function stageTop(){ return stage.getBoundingClientRect().top+window.scrollY; }
-    function progress(){ var r=stage.getBoundingClientRect(); return Math.min(Math.max(-r.top/stageTotal(),0),1)*(N-1); }
+    function u(){ var r=stage.getBoundingClientRect(); return Math.min(Math.max(-r.top/stageTotal(),0),1); }
+    /* map linear scroll u -> card position p with a dwell plateau per card */
+    function toP(uu){ var s=Math.min(Math.floor(uu*N),N-1), l=uu*N-s; if(s>=N-1) return N-1; return l<DWELL ? s : s+ease((l-DWELL)/(1-DWELL)); }
     function render(prog){
       svcs.forEach(function(el,i){
-        var a=(i-prog)*STEP, rad=a*Math.PI/180;
-        var x=Math.sin(rad)*R, z=(Math.cos(rad)-1)*R, d=Math.min(Math.abs(i-prog),2);
-        el.style.transform='translate3d('+x.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+(-a).toFixed(2)+'deg)';
-        el.style.filter='brightness('+(1-0.28*d).toFixed(3)+')';
-        el.style.opacity=(1-0.25*Math.max(d-1,0)).toFixed(3);
+        var off=i-prog, a=off*STEP, rad=a*Math.PI/180, d=Math.min(Math.abs(off),2);
+        var x=Math.sin(rad)*R, z=(Math.cos(rad)-1)*R + (1-Math.min(d,1))*100;      /* front card pops out */
+        var y=(1-Math.min(d,1))*-10 + Math.min(d,1)*30;                            /* side cards sink slightly */
+        el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px) rotateY('+(-a).toFixed(2)+'deg) rotateX('+(Math.min(d,1)*-6).toFixed(2)+'deg)';
+        el.style.filter='brightness('+(1-0.3*d).toFixed(3)+')';
+        el.style.opacity=(1-0.3*Math.max(d-1,0)).toFixed(3);
         el.style.zIndex=String(100-Math.round(d*10));
-        el.classList.toggle('is-front', Math.abs(i-prog)<0.5);
+        el.classList.toggle('is-front', Math.abs(off)<0.5);
       });
       var cur=Math.round(prog);
       if(idxEl){ idxEl.textContent=('0'+(cur+1)).slice(-2); barEl.style.left=(cur*25)+'%'; nameEl.textContent=names[cur]; }
     }
     function scrollToIndex(i){
       i=Math.min(Math.max(i,0),N-1);
-      snapping=true; window.scrollTo({top:stageTop()+stageTotal()*(i/(N-1)), behavior:'smooth'});
-      setTimeout(function(){ snapping=false; },650);
+      snapping=true; window.scrollTo({top:stageTop()+stageTotal()*((i+DWELL/2)/N), behavior:'smooth'});
+      setTimeout(function(){ snapping=false; },700);
     }
     function onScroll(){
-      var prog=progress(); render(prog);
+      var uu=u(); render(toP(uu));
       var r=stage.getBoundingClientRect(); var inside=r.top<=0 && r.bottom>=window.innerHeight;
       if(!inside || snapping) return;
       clearTimeout(snapTimer);
-      snapTimer=setTimeout(function(){ var pn=progress(), near=Math.round(pn); if(Math.abs(pn-near)>0.02) scrollToIndex(near); },140);
+      snapTimer=setTimeout(function(){
+        var uu2=u(), s=Math.min(Math.floor(uu2*N),N-1), l=uu2*N-s;
+        if(l>DWELL && s<N-1){ scrollToIndex( (l-DWELL)/(1-DWELL) < 0.5 ? s : s+1 ); }
+      },160);
     }
-    window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',function(){ render(progress()); }); render(progress());
+    window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',function(){ render(toP(u())); }); render(toP(u()));
     var prev=document.getElementById('carPrev'), next=document.getElementById('carNext');
-    if(prev) prev.addEventListener('click',function(){ scrollToIndex(Math.round(progress())-1); });
-    if(next) next.addEventListener('click',function(){ scrollToIndex(Math.round(progress())+1); });
+    if(prev) prev.addEventListener('click',function(){ scrollToIndex(Math.round(toP(u()))-1); });
+    if(next) next.addEventListener('click',function(){ scrollToIndex(Math.round(toP(u()))+1); });
   }
   /* valuation console */
   var m=document.getElementById('monthly'), x=document.getElementById('multiple');
