@@ -331,11 +331,11 @@ nav.links a:hover{ color:var(--gold); }
 /* ---------- 3D orbital flywheel ---------- */
 .orbit-wrap{ position:relative; }
 .orbit{ position:relative; width:100%; max-width:1000px; height:620px; margin:0 auto; perspective:1400px; }
-.orbit-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.orbit-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; z-index:400; pointer-events:none; }
 .orbit-track{ fill:none; stroke:var(--card-line); stroke-width:1; stroke-dasharray:2 8; opacity:.6; }
-.orbit-arrow{ fill:none; stroke:var(--gold); stroke-width:3; stroke-linecap:round; filter:drop-shadow(0 0 6px color-mix(in srgb,var(--gold) 60%,transparent)); }
-.orbit-flow{ fill:none; stroke:var(--gold-2); stroke-width:3; stroke-linecap:round; stroke-dasharray:6 14; animation:flow 1.2s linear infinite; }
-@keyframes flow{ to{ stroke-dashoffset:-20; } }
+.orbit-arrow{ fill:none; stroke:var(--gold); stroke-width:7; stroke-linecap:round; filter:drop-shadow(0 0 6px color-mix(in srgb,var(--gold) 60%,transparent)); }
+.orbit-flow{ fill:none; stroke:#fff6dc; stroke-width:2.5; stroke-linecap:round; stroke-dasharray:8 16; animation:flow 1s linear infinite; opacity:.9; }
+@keyframes flow{ to{ stroke-dashoffset:-24; } }
 @media (prefers-reduced-motion:reduce){ .orbit-flow{ animation:none; } }
 .node{
   position:absolute; left:50%; top:50%; width:250px; height:250px; margin:-125px 0 0 -125px;
@@ -716,7 +716,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <div class="orbit" id="orbit" aria-label="The margin-to-equity flywheel, rotating">
         <svg class="orbit-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <defs>
-            <marker id="arw" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto"><path d="M0 0 L12 6 L0 12 L3 6 z" fill="var(--gold-2)"/></marker>
+            <marker id="arw" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4.2" markerHeight="4.2" markerUnits="strokeWidth" orient="auto"><path d="M0 0.5 L12 6 L0 11.5 L3.2 6 z" fill="var(--gold-2)" stroke="var(--gold-deep)" stroke-width="0.6"/></marker>
           </defs>
           <ellipse class="orbit-track" cx="500" cy="330" rx="400" ry="150"/>
           <g id="orbitArrows"></g>
@@ -1061,37 +1061,42 @@ footer.bottom nav a:hover{ color:var(--gold); }
     if(next) next.addEventListener('click',function(){ scrollToIndex(Math.round(toP(u()))+1); });
   }
 
-  /* orbital flywheel: perpetual 3D rotation, nodes grow as they come to the front */
+  /* orbital flywheel: perpetual 3D rotation (left -> right across the front), nodes grow as they come forward */
   var orbit=document.getElementById('orbit');
   if(orbit && window.matchMedia('(min-width:901px)').matches){
     var nodes=orbit.querySelectorAll('.node'), NN=nodes.length, arrowsG=document.getElementById('orbitArrows');
-    var RX=400, RY=150, CX=500, CY=330, theta=0, last=null, speed=-(2*Math.PI)/14000, paused=false;
+    var RX=400, RY=150, CX=500, CY=330, theta=0, last=null, speed=(2*Math.PI)/14000, paused=false, NODE=250;
     var W=function(){ return orbit.clientWidth; }, H=function(){ return orbit.clientHeight; };
     function proj(a){ var s=Math.sin(a), c=Math.cos(a); return {x:CX+ s*RX, y:CY+ c*RY, depth:(c+1)/2}; }
-    function seg(a1,a2,steps){ var d=''; for(var k=0;k<=steps;k++){ var a=a1+(a2-a1)*k/steps, q=proj(a); d+=(k?' L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1); } return d; }
+    function scaleFor(d){ return 0.58+0.62*d; }
+    /* radius of a node in SVG units (svg is scaled to the box) */
+    function radiusSvg(d){ return (NODE*scaleFor(d)/2)/(W()/1000)*0.92; }
+    function dist(p,q){ return Math.hypot(p.x-q.x,(p.y-q.y)*(RX/RY)*0.55+ (p.y-q.y)*0.45); }
+    function arrowPath(a1,a2){
+      var P1=proj(a1), P2=proj(a2), r1=radiusSvg(P1.depth)+10, r2=radiusSvg(P2.depth)+16;
+      var pts=[]; for(var k=0;k<=40;k++){ var a=a1+(a2-a1)*k/40, q=proj(a); if(Math.hypot(q.x-P1.x,q.y-P1.y)>r1 && Math.hypot(q.x-P2.x,q.y-P2.y)>r2) pts.push(q); }
+      if(pts.length<2) return '';
+      return pts.map(function(q,i){ return (i?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1); }).join(' ');
+    }
     orbit.addEventListener('pointerenter',function(){ paused=true; }); orbit.addEventListener('pointerleave',function(){ paused=false; });
     function frame(ts){
       if(last===null) last=ts; var dt=ts-last; last=ts;
       if(!paused && !reduce) theta+=dt*speed;
-      var sx=W()/1000, sy=H()/620;
-      var html='';
+      var sx=W()/1000, sy=H()/620, html='';
       for(var i=0;i<NN;i++){
-        var a=theta-i*2*Math.PI/NN, q=proj(a), d=q.depth;                 /* d=1 front, 0 back */
-        var scale=0.58+0.62*d, x=(q.x*sx - W()/2), y=(q.y*sy - H()/2);
-        nodes[i].style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) scale('+scale.toFixed(3)+')';
+        var a=theta+i*2*Math.PI/NN, q=proj(a), d=q.depth, sc=scaleFor(d);
+        nodes[i].style.transform='translate3d('+(q.x*sx-W()/2).toFixed(1)+'px,'+(q.y*sy-H()/2).toFixed(1)+'px,0) scale('+sc.toFixed(3)+')';
         nodes[i].style.zIndex=String(10+Math.round(d*100));
         nodes[i].style.opacity=(0.35+0.65*d).toFixed(3);
         nodes[i].style.filter='brightness('+(0.7+0.3*d).toFixed(3)+') blur('+((1-d)*1.4).toFixed(2)+'px)';
-        /* arrow from this node to the next, trimmed so it doesn't run under the eggs */
-        var a2=a-2*Math.PI/NN, gap=0.26, mid=(a+a2)/2, md=proj(mid).depth, op=(0.25+0.75*md).toFixed(2), dd=seg(a-gap,a2+gap,14);
-        html+='<path class="orbit-arrow" d="'+dd+'" marker-end="url(#arw)" style="opacity:'+op+'"/><path class="orbit-flow" d="'+dd+'" style="opacity:'+op+'"/>';
+        var a2=a+2*Math.PI/NN, md=proj((a+a2)/2).depth, op=(0.3+0.7*md).toFixed(2), dd=arrowPath(a,a2);
+        if(dd) html+='<path class="orbit-arrow" d="'+dd+'" marker-end="url(#arw)" style="opacity:'+op+'"/><path class="orbit-flow" d="'+dd+'" style="opacity:'+op+'"/>';
       }
       arrowsG.innerHTML=html;
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
-
   /* valuation console */
   var m=document.getElementById('monthly'), x=document.getElementById('multiple');
   var mv=document.getElementById('mv'), xv=document.getElementById('xv'), an=document.getElementById('annual'), rs=document.getElementById('result');
