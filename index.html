@@ -28,6 +28,7 @@
   --btn-ink:#1c1812;
   --brand-mark-bg:#1c1812;
   --day-display:block; --night-display:none;
+  --nav-bg:rgba(250,247,240,0.96); --nav-line:rgba(35,28,16,0.18); --nav-ink:#2a251c; --nav-ink-strong:#1c1812;
   --school-bg:#0f1f2e; --school-bg-2:#16304a; --school-ink:#f3efe6; --school-ink-2:#c9d1dc; --school-line:rgba(240,220,168,0.22); --school-accent:#f0dca8; --school-gift:rgba(255,255,255,0.04); --school-glow:rgba(212,184,122,0.22);
   color-scheme:light;
 }
@@ -46,6 +47,7 @@
     --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
     --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
     --day-display:none; --night-display:block;
+    --nav-bg:rgba(8,14,28,0.94); --nav-line:rgba(212,184,122,0.28); --nav-ink:#e6e9f0; --nav-ink-strong:#ffffff;
     --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
     color-scheme:dark;
   }
@@ -63,6 +65,7 @@
   --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
   --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
   --day-display:none; --night-display:block;
+  --nav-bg:rgba(8,14,28,0.94); --nav-line:rgba(212,184,122,0.28); --nav-ink:#e6e9f0; --nav-ink-strong:#ffffff;
   --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
   color-scheme:dark;
 }
@@ -128,14 +131,17 @@ h1,h2,h3,.serif{
 .strip .live::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 20%,transparent), 0 0 14px var(--gold); }
 
 /* ---------- nav ---------- */
-header.site{ position:sticky; top:0; z-index:40; backdrop-filter:blur(14px); background:color-mix(in srgb, var(--bg) 78%, transparent); border-bottom:1px solid var(--line); }
+header.site{ position:sticky; top:0; z-index:40; backdrop-filter:blur(18px) saturate(1.2); background:var(--nav-bg); border-bottom:1px solid var(--nav-line); box-shadow:0 10px 30px -18px rgba(2,6,20,.6); }
 .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 40px; gap:20px; }
 .brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:inherit; }
 .brand img{ width:46px; height:46px; border-radius:10px; object-fit:cover; border:1px solid var(--line-strong); box-shadow:0 8px 20px -10px rgba(0,0,0,.6); }
 .brand .name{ font-family:'Fraunces',serif; font-weight:400; font-size:19px; }
-.brand .name span{ color:var(--ink-3); font-style:italic; font-weight:300; }
+.brand .name{ color:var(--nav-ink-strong); }
+.brand .name span{ color:var(--nav-ink); font-style:italic; font-weight:300; }
 nav.links{ display:flex; gap:32px; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; font-weight:500; }
-nav.links a{ color:var(--ink-2); text-decoration:none; transition:color .2s; }
+nav.links a{ color:var(--nav-ink); text-decoration:none; transition:color .2s; position:relative; padding:6px 0; }
+nav.links a::after{ content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; background:var(--gold); transition:right .25s ease; }
+nav.links a:hover::after{ right:0; }
 nav.links a:hover{ color:var(--gold); }
 @media (max-width:960px){ nav.links{ display:none; } }
 
@@ -200,20 +206,23 @@ nav.links a:hover{ color:var(--gold); }
 .float.f3{ left:-22px; bottom:14%; }
 @media (max-width:960px){ .float{ display:none; } .hero-stack .back-card{ display:none; } }
 
-/* ---------- stacking deck (offers) ---------- */
-.deck{ position:relative; }
-.deck .offer{ position:sticky; top:110px; margin-bottom:24px; transform-origin:top center; will-change:transform; }
-.deck .offer:nth-child(2){ top:132px; }
-.deck .offer:nth-child(3){ top:154px; }
-.deck-note{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-3); margin-bottom:22px; display:flex; align-items:center; gap:12px; }
-.deck-note::after{ content:""; flex:1; height:1px; background:var(--line); }
-.offers.deck{ display:block; perspective:none; }
-.offers.deck .offer{ min-height:300px; background:color-mix(in srgb, var(--bg-2) 94%, #fff); backdrop-filter:none; }
-.offers.deck .offer.featured{ background:linear-gradient(170deg, color-mix(in srgb,var(--gold) 16%,var(--bg-2)), color-mix(in srgb, var(--bg-2) 94%, #fff)); }
-.offers.deck .offer:last-child{ min-height:0; }
-.offers.deck .offer .row{ display:grid; grid-template-columns:1.1fr 1fr; gap:36px; align-items:start; }
-@media (max-width:760px){ .offers.deck .offer .row{ grid-template-columns:1fr; } }
-@media (min-width:761px){ .offers.deck .offer{ padding:44px 48px; } }
+/* ---------- fan deck (offers): start stacked, fan out on scroll ---------- */
+.fan-stage{ position:relative; height:260vh; }
+.fan-sticky{ position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; perspective:1600px; }
+.fan{ position:relative; width:100%; max-width:1100px; height:520px; transform-style:preserve-3d; }
+.fan .offer{ position:absolute; left:50%; top:50%; width:340px; height:500px; margin-left:-170px; margin-top:-250px; transform-origin:50% 120%; will-change:transform; backdrop-filter:none;
+  background:color-mix(in srgb, var(--bg-2) 94%, #fff); }
+.fan .offer.featured{ background:linear-gradient(170deg, color-mix(in srgb,var(--gold) 16%,var(--bg-2)), color-mix(in srgb, var(--bg-2) 94%, #fff)); }
+.fan .offer p{ font-size:13.5px; display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden; }
+.fan .offer h3{ font-size:23px; }
+.fan .offer .price{ font-size:40px; }
+.fan-hud{ position:absolute; left:50%; bottom:6vh; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--ink-3); white-space:nowrap; }
+@media (max-width:900px){
+  .fan-stage{ height:auto; } .fan-sticky{ position:static; height:auto; display:block; perspective:none; }
+  .fan{ height:auto; display:grid; gap:20px; }
+  .fan .offer{ position:relative; left:auto; top:auto; width:auto; height:auto; margin:0; transform:none !important; }
+  .fan-hud{ display:none; }
+}
 
 /* ---------- cascade (services) ---------- */
 .cascade{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; perspective:1800px; transform-style:preserve-3d; }
@@ -255,6 +264,10 @@ nav.links a:hover{ color:var(--gold); }
 .carousel-hud .bar{ width:180px; height:1px; background:var(--line-strong); position:relative; }
 .carousel-hud .bar i{ position:absolute; left:0; top:-1px; height:3px; width:25%; background:var(--gold); transition:left .15s linear; }
 .carousel-hud b{ color:var(--gold); font-weight:500; }
+.car-btn{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line-strong); background:var(--panel-strong); color:var(--ink); font-family:'Fraunces',serif; font-size:18px; cursor:pointer; display:grid; place-items:center; transition:border-color .2s, color .2s; }
+.car-btn:hover{ border-color:var(--gold); color:var(--gold); }
+.car-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+.ring .svc:not(.is-front){ pointer-events:none; }
 .carousel-hint{ position:absolute; top:5vh; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--ink-3); }
 @media (max-width:860px){
   .carousel-stage{ height:auto; }
@@ -692,28 +705,35 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <h2>Find the margin. Prove it. Then compound it.</h2>
       <p>The audit is diagnostic, not a disguised sales call. You keep the roadmap whether or not we work together.</p>
     </div>
-    <div class="deck-note">Scroll — the three offers stack</div>
-    <div class="offers deck">
-      <div class="offer tilt" data-tilt="3">
-        <div class="row"><div><div class="tag lift">The no-risk first step</div>
+    <div class="fan-stage">
+      <div class="fan-sticky">
+        <div class="offers fan">
+      <div class="offer">
+        <div class="tag lift">The no-risk first step</div>
         <h3 class="lift">Hidden-Value Audit</h3>
-        <div class="price lift-2">$250</div></div><div><p class="lift">A 60-minute operator audit of your website, customer journey, messaging, software stack, and operating friction — with three ranked automation recommendations and a recorded "Fix, Automate, Replace or Ignore" walkthrough.</p>
-        <div class="out lift"><b>Outcome</b>Recorded audit + prioritized hidden-value map</div></div></div>
+        <div class="price lift-2">$250</div>
+        <p class="lift">A 60-minute operator audit of your website, customer journey, messaging, software stack, and operating friction — with three ranked automation recommendations and a recorded "Fix, Automate, Replace or Ignore" walkthrough.</p>
+        <div class="out lift"><b>Outcome</b>Recorded audit + prioritized hidden-value map</div>
         <span class="glare"></span>
       </div>
-      <div class="offer featured tilt" data-tilt="3">
-        <div class="row"><div><div class="tag lift">Build what matters</div>
+      <div class="offer featured">
+        <div class="tag lift">Build what matters</div>
         <h3 class="lift">3-Automation Sprint</h3>
-        <div class="price lift-2">$1,600<small>8 hrs · $200/hr</small></div></div><div><p class="lift">Eight focused hours to build, test, and document up to three tightly scoped automations — web, SMS, voice, follow-up, or reporting.</p>
-        <div class="out lift"><b>Outcome</b>Working workflows with acceptance tests</div></div></div>
+        <div class="price lift-2">$1,600<small>8 hrs · $200/hr</small></div>
+        <p class="lift">Eight focused hours to build, test, and document up to three tightly scoped automations — web, SMS, voice, follow-up, or reporting.</p>
+        <div class="out lift"><b>Outcome</b>Working workflows with acceptance tests</div>
         <span class="glare"></span>
       </div>
-      <div class="offer tilt" data-tilt="3">
-        <div class="row"><div><div class="tag lift">Ongoing leverage</div>
+      <div class="offer">
+        <div class="tag lift">Ongoing leverage</div>
         <h3 class="lift">Fractional AI Ops Partner</h3>
-        <div class="price lift-2">$2,500<small>per week</small></div></div><div><p class="lift">Prioritization, implementation oversight, monitoring, and repair — without hiring a full technical team.</p>
-        <div class="out lift"><b>Outcome</b>One accountable operating partner</div></div></div>
+        <div class="price lift-2">$2,500<small>per week</small></div>
+        <p class="lift">Prioritization, implementation oversight, monitoring, and repair — without hiring a full technical team.</p>
+        <div class="out lift"><b>Outcome</b>One accountable operating partner</div>
         <span class="glare"></span>
+      </div>
+        </div>
+        <div class="fan-hud">Scroll — the three offers fan out</div>
       </div>
     </div>
     <div class="founding">
@@ -767,7 +787,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
         </div>
         </div>
         </div>
-        <div class="carousel-hud"><span>Demo <b id="carIdx">01</b> / 04</span><span class="bar"><i id="carBar"></i></span><span id="carName">Knowledge</span></div>
+        <div class="carousel-hud"><button type="button" class="car-btn" id="carPrev" aria-label="Previous demo">←</button><span>Demo <b id="carIdx">01</b> / 04</span><span class="bar"><i id="carBar"></i></span><span id="carName">Knowledge</span><button type="button" class="car-btn" id="carNext" aria-label="Next demo">→</button></div>
       </div>
     </div>
   </div>
@@ -868,23 +888,25 @@ footer.bottom nav a:hover{ color:var(--gold); }
   }
 
 
-  /* stacking deck: scale earlier cards as later ones cover them */
-  var deck=document.querySelector('.offers.deck');
-  if(deck && fine){
-    var cards=Array.prototype.slice.call(deck.querySelectorAll('.offer'));
-    function onScroll(){
-      var vh=window.innerHeight;
-      cards.forEach(function(c,i){
-        var r=c.getBoundingClientRect();
-        var next=cards[i+1]; if(!next) return;
-        var nr=next.getBoundingClientRect();
-        var overlap=Math.min(Math.max((r.bottom-nr.top)/r.height,0),1);
-        var s=1-overlap*0.05, y=-overlap*10;
-        c.style.transform='translateY('+y+'px) scale('+s.toFixed(3)+')';
-        c.style.filter='brightness('+(1-overlap*0.18).toFixed(3)+')';
+  /* fan deck: cards start stacked, fan out into a row as you scroll */
+  var fstage=document.querySelector('.fan-stage'), fan=document.querySelector('.offers.fan');
+  if(fstage && fan && window.matchMedia('(min-width:901px)').matches){
+    var fc=fan.querySelectorAll('.offer'), FN=fc.length;
+    var ease=function(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; };
+    function fanIt(){
+      var r=fstage.getBoundingClientRect(), total=r.height-window.innerHeight;
+      var raw=Math.min(Math.max(-r.top/total,0),1), pr=ease(Math.min(raw/0.8,1));
+      var spread=Math.min(fan.clientWidth/FN, 380);
+      fc.forEach(function(el,i){
+        var c=i-(FN-1)/2;
+        var stackX=c*10, stackY=-i*8, stackR=c*3;
+        var fanX=c*spread, fanR=c*6*(1-raw);
+        var x=stackX+(fanX-stackX)*pr, y=stackY*(1-pr), rot=stackR+(fanR-stackR)*pr;
+        el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) rotate('+rot.toFixed(2)+'deg)';
+        el.style.zIndex=String(i===1 ? 10 : 5+i);
       });
     }
-    window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); onScroll();
+    window.addEventListener('scroll',fanIt,{passive:true}); window.addEventListener('resize',fanIt); fanIt();
   }
   /* cascade parallax on section pointer */
   var casc=document.querySelector('.cascade');
@@ -908,27 +930,44 @@ footer.bottom nav a:hover{ color:var(--gold); }
   }
 
 
-  /* 3D scroll carousel — coverflow: cards sweep left→right as you scroll */
+  /* 3D scroll carousel — coverflow with snap-lock so the front card is always clickable */
   var stage=document.querySelector('.carousel-stage'), ring=document.querySelector('.ring');
   if(stage && ring && window.matchMedia('(min-width:861px)').matches){
     var svcs=ring.querySelectorAll('.svc'), N=svcs.length, STEP=52, R=720, names=['Knowledge','Capture','Automate','Brand'];
     var idxEl=document.getElementById('carIdx'), barEl=document.getElementById('carBar'), nameEl=document.getElementById('carName');
-    function car(){
-      var r=stage.getBoundingClientRect(), total=r.height-window.innerHeight;
-      var prog=Math.min(Math.max(-r.top/total,0),1)*(N-1);
+    var snapTimer=null, snapping=false;
+    function stageTotal(){ return stage.offsetHeight-window.innerHeight; }
+    function stageTop(){ return stage.getBoundingClientRect().top+window.scrollY; }
+    function progress(){ var r=stage.getBoundingClientRect(); return Math.min(Math.max(-r.top/stageTotal(),0),1)*(N-1); }
+    function render(prog){
       svcs.forEach(function(el,i){
         var a=(i-prog)*STEP, rad=a*Math.PI/180;
-        var x=Math.sin(rad)*R, z=(Math.cos(rad)-1)*R;
-        var d=Math.min(Math.abs(i-prog),2);
+        var x=Math.sin(rad)*R, z=(Math.cos(rad)-1)*R, d=Math.min(Math.abs(i-prog),2);
         el.style.transform='translate3d('+x.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+(-a).toFixed(2)+'deg)';
         el.style.filter='brightness('+(1-0.28*d).toFixed(3)+')';
         el.style.opacity=(1-0.25*Math.max(d-1,0)).toFixed(3);
         el.style.zIndex=String(100-Math.round(d*10));
+        el.classList.toggle('is-front', Math.abs(i-prog)<0.5);
       });
       var cur=Math.round(prog);
       if(idxEl){ idxEl.textContent=('0'+(cur+1)).slice(-2); barEl.style.left=(cur*25)+'%'; nameEl.textContent=names[cur]; }
     }
-    window.addEventListener('scroll',car,{passive:true}); window.addEventListener('resize',car); car();
+    function scrollToIndex(i){
+      i=Math.min(Math.max(i,0),N-1);
+      snapping=true; window.scrollTo({top:stageTop()+stageTotal()*(i/(N-1)), behavior:'smooth'});
+      setTimeout(function(){ snapping=false; },650);
+    }
+    function onScroll(){
+      var prog=progress(); render(prog);
+      var r=stage.getBoundingClientRect(); var inside=r.top<=0 && r.bottom>=window.innerHeight;
+      if(!inside || snapping) return;
+      clearTimeout(snapTimer);
+      snapTimer=setTimeout(function(){ var pn=progress(), near=Math.round(pn); if(Math.abs(pn-near)>0.02) scrollToIndex(near); },140);
+    }
+    window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',function(){ render(progress()); }); render(progress());
+    var prev=document.getElementById('carPrev'), next=document.getElementById('carNext');
+    if(prev) prev.addEventListener('click',function(){ scrollToIndex(Math.round(progress())-1); });
+    if(next) next.addEventListener('click',function(){ scrollToIndex(Math.round(progress())+1); });
   }
   /* valuation console */
   var m=document.getElementById('monthly'), x=document.getElementById('multiple');
