@@ -1089,7 +1089,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
         nodes[i].style.zIndex=String(10+Math.round(d*100));
         nodes[i].style.opacity=(0.35+0.65*d).toFixed(3);
         nodes[i].style.filter='brightness('+(0.7+0.3*d).toFixed(3)+') blur('+((1-d)*1.4).toFixed(2)+'px)';
-        var a2=a-2*Math.PI/NN, md=proj((a+a2)/2).depth, op=(0.3+0.7*md).toFixed(2), dd=arrowPath(a,a2);
+        var a2=a+2*Math.PI/NN, md=proj((a+a2)/2).depth, op=(0.3+0.7*md).toFixed(2), dd=arrowPath(a,a2);
         if(dd) html+='<path class="orbit-arrow" d="'+dd+'" marker-end="url(#arw)" style="opacity:'+op+'"/><path class="orbit-flow" d="'+dd+'" style="opacity:'+op+'"/>';
       }
       arrowsG.innerHTML=html;
