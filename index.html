@@ -327,6 +327,33 @@ nav.links a:hover{ color:var(--gold); }
   .stats .wrap{ padding:0; }
 }
 
+
+/* ---------- 3D orbital flywheel ---------- */
+.orbit-wrap{ position:relative; }
+.orbit{ position:relative; width:100%; max-width:1000px; height:620px; margin:0 auto; perspective:1400px; }
+.orbit-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.orbit-track{ fill:none; stroke:var(--card-line); stroke-width:1; stroke-dasharray:3 7; }
+.orbit-arrow{ fill:none; stroke:var(--gold); stroke-width:1.6; stroke-linecap:round; }
+.node{
+  position:absolute; left:50%; top:50%; width:230px; height:270px; margin:-135px 0 0 -115px;
+  padding:34px 26px 28px; text-align:center; will-change:transform;
+  background:var(--card-bg); border:1px solid var(--card-line); box-shadow:var(--card-shadow-strong);
+  border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+}
+.node::before{ content:""; position:absolute; inset:1px; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(80% 50% at 50% 0%, color-mix(in srgb,var(--gold) 22%,transparent), transparent 70%); }
+.node .n{ width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-family:'Fraunces',serif; font-size:16px; color:#1a1206;
+  background:linear-gradient(135deg,var(--gold-2),var(--gold-deep)); box-shadow:0 8px 18px -8px var(--gold); position:relative; }
+.node h4{ font-family:'Fraunces',serif; font-weight:400; font-size:17px; margin:4px 0 0; color:var(--ink); line-height:1.15; position:relative; }
+.node p{ margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.45; position:relative; }
+.orbit-core{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+.orbit-core span{ display:block; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:var(--gold); }
+.orbit-core b{ display:block; font-family:'Fraunces',serif; font-weight:300; font-size:40px; color:var(--ink); opacity:.25; letter-spacing:-0.02em; }
+.fly.fly-mobile{ display:none; }
+.orbit{ margin-bottom:24px; }
+@media (max-width:900px){ .orbit{ display:none; } .fly.fly-mobile{ display:grid; } }
+
 /* ---------- hero ---------- */
 .hero{ padding:80px 0 90px; position:relative; overflow:hidden; perspective:1400px; }
 .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:72px; align-items:center; }
@@ -565,7 +592,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <a href="#services">Services</a>
       <a href="#school">Night School</a>
     </nav>
-    <a class="btn btn-gold" href="#offers"><span class="label-long">Begin the&nbsp;</span>Audit <span class="arrow">→</span></a>
+    <a class="btn btn-gold" href="#offers"><span><span class="label-long">Begin the </span>Audit</span> <span class="arrow">→</span></a>
   </div>
 </header>
 
@@ -682,12 +709,29 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <h2>Recover capacity. Build connection. Compound the value.</h2>
       <p>A strategic sequence, not a promise — every operating decision has to earn its place in the real business.</p>
     </div>
-    <div class="fly">
-      <div class="fstep"><div class="n">I</div><h4>Automate the repetitive</h4><p>Build operating leverage where no human touch is needed.</p></div>
-      <div class="fstep"><div class="n">II</div><h4>Improve margin &amp; cash flow</h4><p>Recovered hours and reduced overhead land directly on the P&amp;L.</p></div>
-      <div class="fstep"><div class="n">III</div><h4>Reinvest in the brand</h4><p>Put freed capacity toward the connection a machine can't replicate.</p></div>
-      <div class="fstep"><div class="n">IV</div><h4>Earn pricing power</h4><p>A stronger experience sustains higher rates and more direct, repeat demand.</p></div>
-      <div class="fstep"><div class="n">V</div><h4>Compound into equity</h4><p>Each cycle frees more margin, more cash flow, and more enterprise value.</p></div>
+    <div class="orbit-wrap">
+      <div class="orbit" id="orbit" aria-label="The margin-to-equity flywheel, rotating">
+        <svg class="orbit-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--gold)"/></marker>
+          </defs>
+          <ellipse class="orbit-track" cx="500" cy="330" rx="400" ry="150"/>
+          <g id="orbitArrows"></g>
+        </svg>
+        <div class="node" data-i="0"><span class="n">I</span><h4>Automate the repetitive</h4><p>Build operating leverage where no human touch is needed.</p></div>
+        <div class="node" data-i="1"><span class="n">II</span><h4>Improve margin &amp; cash flow</h4><p>Recovered hours and reduced overhead land on the P&amp;L.</p></div>
+        <div class="node" data-i="2"><span class="n">III</span><h4>Reinvest in the brand</h4><p>Put freed capacity toward the connection a machine can't replicate.</p></div>
+        <div class="node" data-i="3"><span class="n">IV</span><h4>Earn pricing power</h4><p>A stronger experience sustains higher rates and repeat demand.</p></div>
+        <div class="node" data-i="4"><span class="n">V</span><h4>Compound into equity</h4><p>Each cycle frees more margin, cash flow, and enterprise value.</p></div>
+        <div class="orbit-core"><span>Margin → Equity</span><b>Flywheel</b></div>
+      </div>
+      <div class="fly fly-mobile">
+        <div class="fstep"><div class="n">I</div><h4>Automate the repetitive</h4><p>Build operating leverage where no human touch is needed.</p></div>
+        <div class="fstep"><div class="n">II</div><h4>Improve margin &amp; cash flow</h4><p>Recovered hours and reduced overhead land directly on the P&amp;L.</p></div>
+        <div class="fstep"><div class="n">III</div><h4>Reinvest in the brand</h4><p>Put freed capacity toward the connection a machine can't replicate.</p></div>
+        <div class="fstep"><div class="n">IV</div><h4>Earn pricing power</h4><p>A stronger experience sustains higher rates and more direct, repeat demand.</p></div>
+        <div class="fstep"><div class="n">V</div><h4>Compound into equity</h4><p>Each cycle frees more margin, more cash flow, and more enterprise value.</p></div>
+      </div>
     </div>
     <div class="fine">Illustrative operating logic only — not an appraisal, forecast, or guarantee of revenue, pricing, financing, or property value.</div>
   </div>
@@ -1013,6 +1057,38 @@ footer.bottom nav a:hover{ color:var(--gold); }
     if(prev) prev.addEventListener('click',function(){ scrollToIndex(Math.round(toP(u()))-1); });
     if(next) next.addEventListener('click',function(){ scrollToIndex(Math.round(toP(u()))+1); });
   }
+
+  /* orbital flywheel: perpetual 3D rotation, nodes grow as they come to the front */
+  var orbit=document.getElementById('orbit');
+  if(orbit && window.matchMedia('(min-width:901px)').matches){
+    var nodes=orbit.querySelectorAll('.node'), NN=nodes.length, arrowsG=document.getElementById('orbitArrows');
+    var RX=400, RY=150, CX=500, CY=330, theta=0, last=null, speed=(2*Math.PI)/28000, paused=false;
+    var W=function(){ return orbit.clientWidth; }, H=function(){ return orbit.clientHeight; };
+    function proj(a){ var s=Math.sin(a), c=Math.cos(a); return {x:CX+ s*RX, y:CY+ c*RY, depth:(c+1)/2}; }
+    function seg(a1,a2,steps){ var d=''; for(var k=0;k<=steps;k++){ var a=a1+(a2-a1)*k/steps, q=proj(a); d+=(k?' L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1); } return d; }
+    orbit.addEventListener('pointerenter',function(){ paused=true; }); orbit.addEventListener('pointerleave',function(){ paused=false; });
+    function frame(ts){
+      if(last===null) last=ts; var dt=ts-last; last=ts;
+      if(!paused && !reduce) theta+=dt*speed;
+      var sx=W()/1000, sy=H()/620;
+      var html='';
+      for(var i=0;i<NN;i++){
+        var a=theta+i*2*Math.PI/NN, q=proj(a), d=q.depth;                 /* d=1 front, 0 back */
+        var scale=0.58+0.62*d, x=(q.x*sx - W()/2), y=(q.y*sy - H()/2);
+        nodes[i].style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0) scale('+scale.toFixed(3)+')';
+        nodes[i].style.zIndex=String(10+Math.round(d*100));
+        nodes[i].style.opacity=(0.35+0.65*d).toFixed(3);
+        nodes[i].style.filter='brightness('+(0.7+0.3*d).toFixed(3)+') blur('+((1-d)*1.4).toFixed(2)+'px)';
+        /* arrow from this node to the next, trimmed so it doesn't run under the eggs */
+        var a2=a+2*Math.PI/NN, gap=0.22, mid=(a+a2)/2, md=proj(mid).depth;
+        html+='<path class="orbit-arrow" d="'+seg(a+gap,a2-gap,14)+'" marker-end="url(#arw)" style="opacity:'+(0.25+0.75*md).toFixed(2)+'"/>';
+      }
+      arrowsG.innerHTML=html;
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
   /* valuation console */
   var m=document.getElementById('monthly'), x=document.getElementById('multiple');
   var mv=document.getElementById('mv'), xv=document.getElementById('xv'), an=document.getElementById('annual'), rs=document.getElementById('result');
