@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Night Shift</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
@@ -308,6 +309,24 @@ nav.links a:hover{ color:var(--gold); }
 .school-panel .workshop-card .cap span{ color:var(--school-accent); }
 .school-panel .chalk{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--school-accent); opacity:.8; position:absolute; top:26px; right:32px; }
 
+
+/* ---------- mobile chrome ---------- */
+@media (max-width:640px){
+  .strip .wrap{ padding:10px 22px; justify-content:center; }
+  .strip .wrap > span:not(.live){ display:none; }
+  .nav{ padding:12px 18px; gap:12px; }
+  .brand img{ width:40px; height:40px; }
+  .brand .name{ font-size:16px; white-space:nowrap; }
+  .brand .name span{ display:none; }
+  .nav .btn{ padding:11px 16px; font-size:11px; letter-spacing:0.1em; white-space:nowrap; }
+  .nav .btn .label-long{ display:none; }
+  .hero{ padding:56px 0 64px; }
+  .hero h1{ font-size:clamp(38px,11vw,46px); }
+  .section{ padding:72px 0; }
+  .theme-switch{ right:14px; bottom:14px; }
+  .stats .wrap{ padding:0; }
+}
+
 /* ---------- hero ---------- */
 .hero{ padding:80px 0 90px; position:relative; overflow:hidden; perspective:1400px; }
 .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:72px; align-items:center; }
@@ -546,7 +565,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <a href="#services">Services</a>
       <a href="#school">Night School</a>
     </nav>
-    <a class="btn btn-gold" href="#offers">Begin the audit <span class="arrow">→</span></a>
+    <a class="btn btn-gold" href="#offers"><span class="label-long">Begin the&nbsp;</span>Audit <span class="arrow">→</span></a>
   </div>
 </header>
 
