@@ -390,13 +390,15 @@ nav.links a:hover{ color:var(--gold); }
 /* ---------- flywheel ---------- */
 .fly{ display:grid; grid-template-columns:repeat(5,1fr); position:relative; }
 @media (max-width:900px){ .fly{ grid-template-columns:1fr; } }
-.fly::before{ content:""; position:absolute; left:0; right:0; top:22px; height:1px; background:linear-gradient(90deg, transparent, var(--gold-deep), transparent); }
+.fly::before{ content:""; position:absolute; left:0; right:0; top:48px; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); z-index:0; }
 @media (max-width:900px){ .fly::before{ display:none; } }
-.fstep{ padding-right:28px; position:relative; }
-.fstep .n{ width:44px; height:44px; border-radius:50%; border:1px solid var(--gold-deep); background:var(--bg); display:grid; place-items:center; font-family:'Fraunces',serif; font-size:17px; color:var(--gold); position:relative; z-index:1; margin-bottom:22px; }
-.fstep h4{ font-family:'Fraunces',serif; font-weight:400; font-size:19px; margin:0 0 10px; }
+.fly{ gap:16px; }
+.fstep{ position:relative; padding:26px 24px 28px; background:var(--card-bg); border:1px solid var(--card-line); border-radius:14px; box-shadow:var(--card-shadow-strong); }
+.fstep::before{ content:""; position:absolute; left:24px; right:24px; top:0; height:2px; background:linear-gradient(90deg,var(--gold-deep),var(--gold-2),transparent); border-radius:2px; }
+.fstep .n{ width:44px; height:44px; border-radius:50%; border:1px solid var(--gold); background:linear-gradient(135deg,var(--gold-2),var(--gold-deep)); color:#1a1206 !important; font-weight:500; box-shadow:0 8px 18px -8px var(--gold); display:grid; place-items:center; font-family:'Fraunces',serif; font-size:17px; color:var(--gold); position:relative; z-index:1; margin-bottom:22px; }
+.fstep h4{ font-family:'Fraunces',serif; font-weight:400; font-size:19px; margin:0 0 10px; color:var(--ink); }
 .fstep p{ margin:0; color:var(--ink-2); font-size:14px; }
-@media (max-width:900px){ .fstep{ padding:24px 0; border-top:1px solid var(--line); } .fstep:first-child{ border-top:none; padding-top:0; } }
+@media (max-width:900px){ .fly{ gap:14px; } }
 .fine{ margin-top:44px; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.06em; color:var(--ink-3); line-height:1.7; max-width:80ch; }
 
 /* ---------- console ---------- */
@@ -466,17 +468,20 @@ input[type="range"]:focus-visible{ outline:1px solid var(--gold); outline-offset
 /* ---------- bio ---------- */
 .bio{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; align-items:start; perspective:1400px; }
 @media (max-width:860px){ .bio{ grid-template-columns:1fr; gap:36px; } }
-.portrait{ aspect-ratio:4/5; border-radius:14px; border:1px solid var(--line-strong); overflow:hidden; box-shadow:var(--card-shadow); background:var(--bg-3); }
+.portrait{ aspect-ratio:4/5; border-radius:14px; border:1px solid var(--card-line); overflow:hidden; box-shadow:var(--card-shadow-strong); background:var(--bg-3); }
+.bio-card{ background:var(--card-bg); border:1px solid var(--card-line); border-radius:14px; padding:40px 40px 36px; box-shadow:var(--card-shadow-strong); position:relative; }
+.bio-card::before{ content:""; position:absolute; left:40px; right:40px; top:0; height:2px; background:linear-gradient(90deg,var(--gold-deep),var(--gold-2),transparent); border-radius:2px; }
+@media (max-width:640px){ .bio-card{ padding:28px 22px; } }
 .portrait img{ width:100%; height:100%; object-fit:cover; }
 .portrait::after{ content:""; position:absolute; inset:0; background:var(--media-overlay); pointer-events:none; }
 .portrait .who{ position:absolute; left:26px; bottom:24px; z-index:2; }
 .portrait .who span{ font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:#f0dca8; }
 .portrait .who b{ display:block; font-family:'Fraunces',serif; font-size:30px; font-weight:400; color:#f3efe6; }
-.bio p{ color:var(--ink-2); font-size:16.5px; margin:0 0 20px; }
+.bio p{ color:var(--ink-2); font-size:16px; margin:0 0 18px; }
 .bio p:first-of-type{ font-size:19px; color:var(--ink); }
-.topics{ list-style:none; padding:0; margin:34px 0 0; display:grid; grid-template-columns:1fr 1fr; gap:14px 28px; }
+.topics{ list-style:none; padding:0; margin:30px 0 0; padding-top:24px; border-top:1px solid var(--card-line); display:grid; grid-template-columns:1fr 1fr; gap:14px 28px; }
 @media (max-width:560px){ .topics{ grid-template-columns:1fr; } }
-.topics li{ font-size:13.5px; color:var(--ink-2); padding-left:22px; position:relative; }
+.topics li{ font-size:13.5px; color:var(--ink); padding-left:22px; position:relative; }
 .topics li::before{ content:""; position:absolute; left:0; top:11px; width:10px; height:1px; background:var(--gold); }
 .topics a{ color:var(--gold); text-decoration:none; }
 
@@ -805,7 +810,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <div class="who lift"><span>Operator first · Builder second</span><b>Marco Cepeda</b></div>
       <span class="glare"></span>
     </div>
-    <div>
+    <div class="bio-card">
       <div class="eyebrow" style="margin-bottom:26px;">Bio</div>
       <p>Marco runs Pier Walk on Deerfield Beach, a 20-unit beachfront property whose pricing, guest messaging, and marketing run on a custom AI system he built himself.</p>
       <p>After nearly burning out doing it all by hand, he rebuilt the operation as a stack of AI agents that quietly handle the repetitive work overnight. The Night Shift brings that same system — and the branding and storytelling that make a property stand out — to independent operators without an enterprise budget or a technical team.</p>
