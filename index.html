@@ -644,9 +644,9 @@ footer.bottom nav a:hover{ color:var(--gold); }
   .orbit-arrow{ stroke-width:6; } .orbit-arrow-under{ stroke-width:10; } .orbit-flow{ stroke-width:2; }
   .fly.fly-mobile{ display:none; }
   /* demos → swipeable snap carousel with 3D neighbours */
-  .carousel-stage{ height:210vh; } .carousel-sticky{ position:sticky; top:64px; height:calc(100svh - 64px); padding:3svh 0 0; display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; overflow:hidden; perspective:none; }
+  .carousel-stage{ height:180vh; } .carousel-sticky{ position:sticky; top:64px; height:calc(100svh - 64px); padding:3svh 0 0; display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; overflow:hidden; perspective:none; }
   .carousel-hint{ margin-bottom:6px; }
-  .ring{ padding-top:8px; padding-bottom:18px; }
+  .ring{ padding-top:8px; padding-bottom:18px; touch-action:pan-x pan-y; overscroll-behavior-x:contain; }
   .ring{ width:100% !important; max-width:100%; min-width:0; }
   .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:none; scroll-behavior:auto; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .ring::-webkit-scrollbar{ display:none; }
@@ -1270,9 +1270,15 @@ footer.bottom nav a:hover{ color:var(--gold); }
       var center=function(el){ return el.offsetLeft+el.offsetWidth/2-ring2.clientWidth/2; };
       function tick2(){ var diff=targetX-curX; if(Math.abs(diff)<0.5){ curX=targetX; ring2.scrollLeft=curX; upd(); anim=false; return; } curX+=diff*0.42; ring2.scrollLeft=curX; upd(); requestAnimationFrame(tick2); }
       function go(x){ targetX=x; if(!anim){ anim=true; curX=ring2.scrollLeft; requestAnimationFrame(tick2); } }
-      ring2.addEventListener('touchstart',function(){ touching=true; anim=false; },{passive:true}); ring2.addEventListener('touchend',function(){ setTimeout(function(){ touching=false; },800); },{passive:true});
-      ring2.addEventListener('scroll',function(){ if(!anim) upd(); },{passive:true});
-      var drive=function(){ if(!stage2||touching) return; var r=stage2.getBoundingClientRect(), total=r.height-window.innerHeight; if(total<=0) return;
+      /* manual swipe: after the finger lifts, move the PAGE to the position that matches the card you landed on,
+         so scrolling up from card 1 or down from card 4 leaves the section right away (no trapped feeling) */
+      var syncTimer=null, syncing=false;
+      function nearestCard(){ var rr=ring2.getBoundingClientRect(), cx=rr.left+rr.width/2, best=0, bd=1e9; cards2.forEach(function(c,i){ var cr=c.getBoundingClientRect(), d=Math.abs(cr.left+cr.width/2-cx); if(d<bd){ bd=d; best=i; } }); return best; }
+      function syncPageToCard(){ if(!stage2) return; var total=stage2.offsetHeight-window.innerHeight; if(total<=0) return; var i=nearestCard(), top=stage2.getBoundingClientRect().top+window.scrollY; syncing=true; window.scrollTo({top: top+72+total*(i/(cards2.length-1)), behavior:'auto'}); targetX=curX=ring2.scrollLeft; setTimeout(function(){ syncing=false; touching=false; },120); }
+      ring2.addEventListener('touchstart',function(){ touching=true; anim=false; clearTimeout(syncTimer); },{passive:true});
+      ring2.addEventListener('touchend',function(){ clearTimeout(syncTimer); syncTimer=setTimeout(syncPageToCard,180); },{passive:true});
+      ring2.addEventListener('scroll',function(){ if(!anim) upd(); if(touching){ clearTimeout(syncTimer); syncTimer=setTimeout(syncPageToCard,180); } },{passive:true});
+      var drive=function(){ if(!stage2||touching||syncing) return; var r=stage2.getBoundingClientRect(), total=r.height-window.innerHeight; if(total<=0) return;
         var prog=Math.min(Math.max(-(r.top-72)/total,0),1)*(cards2.length-1);
         var i=Math.floor(prog), f=prog-i, a=cards2[i], b2=cards2[Math.min(i+1,cards2.length-1)];
         go(center(a)+(center(b2)-center(a))*f); };
