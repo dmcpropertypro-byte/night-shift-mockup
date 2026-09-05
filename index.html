@@ -224,7 +224,7 @@ nav.links a:hover{ color:var(--gold); }
 @media (max-width:900px){
   .fan-stage{ height:auto; } .fan-sticky{ position:static; height:auto; display:block; perspective:none; }
   .fan{ height:auto; display:grid; gap:20px; }
-  .fan .offer{ position:relative; left:auto; top:auto; width:auto; height:auto; margin:0; transform:none !important; }
+  .fan .offer{ position:relative; left:auto; top:auto; width:auto; height:auto; margin:0; transform:none; }
   .fan-hud{ display:none; }
 }
 
@@ -277,7 +277,7 @@ nav.links a:hover{ color:var(--gold); }
   .carousel-stage{ height:auto; }
   .carousel-sticky{ position:static; height:auto; perspective:none; display:block; overflow:visible; }
   .ring{ width:auto; height:auto; transform:none !important; display:grid; gap:22px; }
-  .ring .svc{ position:relative; inset:auto; width:auto; height:auto; transform:none !important; filter:none !important; }
+  .ring .svc{ position:relative; inset:auto; width:auto; height:auto; transform:none; filter:none; }
   .carousel-hud,.carousel-hint{ display:none; }
 }
 
@@ -356,6 +356,20 @@ nav.links a:hover{ color:var(--gold); }
 .fly.fly-mobile{ display:none; }
 .orbit{ margin-bottom:24px; }
 @media (max-width:900px){ .orbit{ display:none; } .fly.fly-mobile{ display:grid; } }
+
+
+@media (max-width:640px){
+  .gift{ grid-template-columns:1fr; gap:8px; padding:16px 18px; }
+  .gift .w{ font-size:16px; }
+  .ring .svc p{ display:block; -webkit-line-clamp:unset; overflow:visible; }
+  .svc .media .cap{ font-size:9px; letter-spacing:0.12em; }
+  .school-panel .chalk{ position:static; display:block; margin-bottom:14px; }
+  .workshop-card .cap{ flex-direction:column; align-items:flex-start; gap:6px; }
+  .press .bar{ padding:16px 18px; }
+  .press .h{ font-size:17px; }
+  .founding{ padding:22px 20px; }
+  .stat .num{ font-size:36px; }
+}
 
 /* ---------- hero ---------- */
 .hero{ padding:80px 0 90px; position:relative; overflow:hidden; perspective:1400px; }
@@ -568,6 +582,47 @@ footer.bottom nav a:hover{ color:var(--gold); }
   @keyframes rise{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:none; } }
 }
 @media (prefers-reduced-motion:reduce){ .tilt{ transition:none; } }
+
+/* ===== MOBILE LAYERS — transforms only, no blur ===== */
+@media (max-width:900px){
+  .hero-stack .back-card{ display:block; transform:translate(14px,14px) rotate(2deg); }
+  .hero-stack .back-card.two{ transform:translate(-10px,26px) rotate(-2.5deg); opacity:.5; }
+  .float{ display:block; padding:10px 12px; font-size:9px; letter-spacing:.14em; backdrop-filter:none; background:var(--card-bg); border-color:var(--card-line); }
+  .float b{ font-size:20px; }
+  .float.f1{ left:-8px; top:15%; } .float.f2{ right:-8px; top:36%; } .float.f3{ left:-6px; bottom:auto; top:55%; }
+  .photo-card .badge{ backdrop-filter:none; }
+  /* offers → sticky stack */
+  .fan-stage{ height:auto; } .fan-sticky{ position:static; height:auto; display:block; perspective:none; }
+  .fan{ height:auto; display:block; }
+  .fan .offer{ position:sticky; top:96px; width:auto; height:auto; left:auto; margin:0 0 18px; transform-origin:top center; will-change:transform; }
+  .fan .offer:nth-child(2){ top:112px; } .fan .offer:nth-child(3){ top:128px; }
+  .fan-hud{ display:none; }
+  /* flywheel → live orbit at phone size */
+  .orbit{ display:block; height:400px; margin-bottom:8px; }
+  .node{ width:118px; height:118px; margin:-59px 0 0 -59px; padding:10px 9px 9px; gap:3px; }
+  .node .n{ width:22px; height:22px; font-size:11px; }
+  .node h4{ font-size:11px; line-height:1.15; } .node p{ display:none; }
+  .orbit-core b{ display:none; } .orbit-core span{ font-size:8.5px; }
+  .orbit{ height:360px; }
+  .orbit-arrow{ stroke-width:5; filter:none; }
+  .fly.fly-mobile{ display:none; }
+  /* demos → swipeable snap carousel with 3D neighbours */
+  .carousel-stage{ height:auto; } .carousel-sticky{ position:static; height:auto; padding-top:0; display:block; overflow:visible; perspective:none; }
+  .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .ring::-webkit-scrollbar{ display:none; }
+  .ring{ box-shadow:none !important; border:0; background:none; }
+  .ring .svc{ flex:0 0 78vw; scroll-snap-align:center; position:relative; inset:auto; width:78vw; height:auto; margin:0 !important; pointer-events:auto !important; opacity:1 !important; transform-origin:center; transition:transform .25s ease, filter .25s ease; will-change:transform; }
+  .ring .svc .media{ height:200px; }
+  .carousel-hud{ position:static; transform:none; justify-content:center; margin:4px auto 0; }
+  .carousel-hint{ position:static; transform:none; text-align:center; margin-bottom:8px; }
+  .car-btn{ display:none; }
+  .console, .theme-switch, .layer-tag{ backdrop-filter:none; }
+  /* scroll reveal */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+  .fan .offer.reveal{ transform:translateY(22px); } .fan .offer.reveal.in{ transform:none; }
+}
+
 </style>
 
 <div class="page">
@@ -1063,9 +1118,11 @@ footer.bottom nav a:hover{ color:var(--gold); }
 
   /* orbital flywheel: perpetual 3D rotation (left -> right across the front), nodes grow as they come forward */
   var orbit=document.getElementById('orbit');
-  if(orbit && window.matchMedia('(min-width:901px)').matches){
+  var isMobile=window.matchMedia('(max-width:900px)').matches;
+  if(orbit){
     var nodes=orbit.querySelectorAll('.node'), NN=nodes.length, arrowsG=document.getElementById('orbitArrows');
-    var RX=400, RY=150, CX=500, CY=330, theta=0, last=null, speed=-(2*Math.PI)/9000, paused=false, NODE=250;
+    var RX=isMobile?330:400, RY=isMobile?118:150, CX=500, CY=330, theta=0, last=null, speed=-(2*Math.PI)/9000, paused=false, NODE=isMobile?118:250, offscreen=false;
+    if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ offscreen=!e.isIntersecting; }); }).observe(orbit); }
     var W=function(){ return orbit.clientWidth; }, H=function(){ return orbit.clientHeight; };
     function proj(a){ var s=Math.sin(a), c=Math.cos(a); return {x:CX+ s*RX, y:CY+ c*RY, depth:(c+1)/2}; }
     function scaleFor(d){ return 0.58+0.62*d; }
@@ -1081,14 +1138,15 @@ footer.bottom nav a:hover{ color:var(--gold); }
     orbit.addEventListener('pointerenter',function(){ paused=true; }); orbit.addEventListener('pointerleave',function(){ paused=false; });
     function frame(ts){
       if(last===null) last=ts; var dt=ts-last; last=ts;
-      if(!paused && !reduce) theta+=dt*speed;
+      if(!paused && !reduce && !offscreen) theta+=dt*speed;
+      if(offscreen){ last=ts; requestAnimationFrame(frame); return; }
       var sx=W()/1000, sy=H()/620, html='';
       for(var i=0;i<NN;i++){
         var a=theta-i*2*Math.PI/NN, q=proj(a), d=q.depth, sc=scaleFor(d);
         nodes[i].style.transform='translate3d('+(q.x*sx-W()/2).toFixed(1)+'px,'+(q.y*sy-H()/2).toFixed(1)+'px,0) scale('+sc.toFixed(3)+')';
         nodes[i].style.zIndex=String(10+Math.round(d*100));
         nodes[i].style.opacity=(0.35+0.65*d).toFixed(3);
-        nodes[i].style.filter='brightness('+(0.7+0.3*d).toFixed(3)+') blur('+((1-d)*1.4).toFixed(2)+'px)';
+        nodes[i].style.filter=isMobile ? 'brightness('+(0.7+0.3*d).toFixed(3)+')' : 'brightness('+(0.7+0.3*d).toFixed(3)+') blur('+((1-d)*1.4).toFixed(2)+'px)';
         var a2=a+2*Math.PI/NN, md=proj((a+a2)/2).depth, op=(0.3+0.7*md).toFixed(2), dd=arrowPath(a,a2);
         if(dd) html+='<path class="orbit-arrow" d="'+dd+'" marker-end="url(#arw)" style="opacity:'+op+'"/><path class="orbit-flow" d="'+dd+'" style="opacity:'+op+'"/>';
       }
@@ -1097,6 +1155,34 @@ footer.bottom nav a:hover{ color:var(--gold); }
     }
     requestAnimationFrame(frame);
   }
+
+  /* ===== mobile layers ===== */
+  if(window.matchMedia('(max-width:900px)').matches){
+    var hs2=document.querySelector('.hero-stack');
+    if(hs2 && !reduce){ var fl2=hs2.querySelectorAll('.float');
+      var par=function(){ var r=hs2.getBoundingClientRect(), pp=(window.innerHeight/2-(r.top+r.height/2))/window.innerHeight; fl2.forEach(function(el,i){ el.style.transform='translateY('+(pp*(16+i*12)).toFixed(1)+'px)'; }); };
+      window.addEventListener('scroll',par,{passive:true}); par(); }
+    var fan2=document.querySelector('.offers.fan');
+    if(fan2){ var oc=fan2.querySelectorAll('.offer');
+      var st=function(){ oc.forEach(function(c,i){ var nx=oc[i+1]; if(!nx) return; var r=c.getBoundingClientRect(), nr=nx.getBoundingClientRect(); var ov=Math.min(Math.max((r.bottom-nr.top)/r.height,0),1); if(!c.classList.contains('reveal')||c.classList.contains('in')){ c.style.transform='translateY('+(-ov*8).toFixed(1)+'px) scale('+(1-ov*0.05).toFixed(3)+')'; c.style.filter='brightness('+(1-ov*0.22).toFixed(3)+')'; } }); };
+      window.addEventListener('scroll',st,{passive:true}); st(); }
+    var ring2=document.querySelector('.ring');
+    if(ring2){ var cards2=ring2.querySelectorAll('.svc'), names2=['Knowledge','Capture','Automate','Brand'];
+      var idx2=document.getElementById('carIdx'), bar2=document.getElementById('carBar'), nm2=document.getElementById('carName');
+      var upd=function(){ var rr=ring2.getBoundingClientRect(), cx=rr.left+rr.width/2, best=0, bd=1e9;
+        cards2.forEach(function(c,i){ var cr=c.getBoundingClientRect(), dd=(cr.left+cr.width/2-cx)/rr.width, a=Math.max(-1,Math.min(1,dd));
+          c.style.transform='perspective(900px) rotateY('+(-a*16).toFixed(2)+'deg) scale('+(1-Math.abs(a)*0.08).toFixed(3)+')'; c.style.filter='brightness('+(1-Math.abs(a)*0.28).toFixed(3)+')';
+          c.classList.toggle('is-front',Math.abs(a)<0.3); if(Math.abs(dd)<bd){ bd=Math.abs(dd); best=i; } });
+        if(idx2){ idx2.textContent=('0'+(best+1)).slice(-2); bar2.style.left=(best*25)+'%'; nm2.textContent=names2[best]; } };
+      ring2.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd(); }
+    if('IntersectionObserver' in window && !reduce){
+      var rv=document.querySelectorAll('.term,.console,.ring .svc,.bio-card,.workshop-card,.stat,.gift,.offers.fan .offer,.press .bar,.video-card');
+      rv.forEach(function(el){ el.classList.add('reveal'); });
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -6% 0px'});
+      rv.forEach(function(el){ io.observe(el); });
+    }
+  }
+
   /* valuation console */
   var m=document.getElementById('monthly'), x=document.getElementById('multiple');
   var mv=document.getElementById('mv'), xv=document.getElementById('xv'), an=document.getElementById('annual'), rs=document.getElementById('result');
