@@ -259,19 +259,19 @@ nav.links a:hover{ color:var(--gold); }
 
 
 /* ---------- 3D scroll carousel (services) ---------- */
-.carousel-stage{ position:relative; height:340vh; }
-.carousel-sticky{ position:sticky; top:0; height:100vh; padding-top:40px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; perspective:1400px; perspective-origin:50% 40%; }
-.ring{ position:relative; width:520px; height:600px; transform-style:preserve-3d; will-change:transform; transform:rotateX(6deg); }
+.carousel-stage{ position:relative; height:280vh; }
+.carousel-sticky{ position:sticky; top:86px; height:calc(100vh - 86px); padding:0 0 70px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; perspective:1400px; perspective-origin:50% 42%; }
+.ring{ position:relative; width:520px; height:560px; transform-style:preserve-3d; will-change:transform; transform:rotateX(6deg); }
 .ring .svc{
-  position:absolute; inset:0; backface-visibility:visible; filter:none; width:520px; height:600px; margin:0 !important; transition:none;
+  position:absolute; inset:0; backface-visibility:visible; filter:none; width:520px; height:560px; margin:0 !important; transition:none;
   backface-visibility:hidden; transform-style:preserve-3d; transition:filter .2s linear;
 }
-.ring .svc .media{ height:280px; aspect-ratio:auto; flex:none; }
+.ring .svc .media{ height:250px; aspect-ratio:auto; flex:none; }
 .ring .svc .body{ padding:26px 28px 28px; gap:12px; }
 .ring .svc h3{ font-size:22px; }
 .ring .svc p{ font-size:14px; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; }
 .carousel-hud{
-  position:absolute; left:50%; bottom:6vh; transform:translateX(-50%); display:flex; align-items:center; gap:18px;
+  position:absolute; left:50%; bottom:18px; transform:translateX(-50%); display:flex; align-items:center; gap:18px;
   font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink-3);
 }
 .carousel-hud .bar{ width:180px; height:1px; background:var(--line-strong); position:relative; }
@@ -281,7 +281,7 @@ nav.links a:hover{ color:var(--gold); }
 .car-btn:hover{ border-color:var(--gold); color:var(--gold); }
 .car-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 .ring .svc:not(.is-front){ pointer-events:none; }
-.carousel-hint{ position:absolute; top:5vh; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--ink-3); }
+.carousel-hint{ position:absolute; top:14px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--ink-3); }
 @media (max-width:860px){
   .carousel-stage{ height:auto; }
   .carousel-sticky{ position:static; height:auto; perspective:none; display:block; overflow:visible; }
@@ -644,7 +644,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
   .orbit-arrow{ stroke-width:6; } .orbit-arrow-under{ stroke-width:10; } .orbit-flow{ stroke-width:2; }
   .fly.fly-mobile{ display:none; }
   /* demos → swipeable snap carousel with 3D neighbours */
-  .carousel-stage{ height:240vh; } .carousel-sticky{ position:sticky; top:72px; height:calc(100vh - 72px); padding-top:0; display:flex; flex-direction:column; align-items:stretch; justify-content:center; overflow:hidden; perspective:none; }
+  .carousel-stage{ height:210vh; } .carousel-sticky{ position:sticky; top:64px; height:calc(100vh - 64px); padding:0 0 24px; display:flex; flex-direction:column; align-items:stretch; justify-content:center; overflow:hidden; perspective:none; }
   .ring{ width:100% !important; max-width:100%; min-width:0; }
   .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:none; scroll-behavior:auto; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .ring::-webkit-scrollbar{ display:none; }
@@ -1171,7 +1171,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
   /* 3D scroll carousel — eased with requestAnimationFrame; the front card is always the click target */
   var stage=document.querySelector('.carousel-stage'), ring=document.querySelector('.ring');
   if(stage && ring && window.matchMedia('(min-width:861px)').matches){
-    var svcs=ring.querySelectorAll('.svc'), N=svcs.length, STEP=58, R=760, DWELL=0.2, names=['Knowledge','Capture','Automate','Brand'];
+    var svcs=ring.querySelectorAll('.svc'), N=svcs.length, STEP=58, R=760, DWELL=0.1, names=['Knowledge','Capture','Automate','Brand'];
     var idxEl=document.getElementById('carIdx'), barEl=document.getElementById('carBar'), nameEl=document.getElementById('carName');
     var cur=0, target=0, idleTimer=null, animating=false;
     var ease=function(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; };
@@ -1192,14 +1192,14 @@ footer.bottom nav a:hover{ color:var(--gold); }
       var c=Math.round(prog);
       if(idxEl){ idxEl.textContent=('0'+(c+1)).slice(-2); barEl.style.left=(c*25)+'%'; nameEl.textContent=names[c]; }
     }
-    function tick(){ var diff=target-cur; if(Math.abs(diff)<0.002){ cur=target; render(cur); animating=false; return; } cur+=diff*0.3; render(cur); requestAnimationFrame(tick); }
+    function tick(){ var diff=target-cur; if(Math.abs(diff)<0.002){ cur=target; render(cur); animating=false; return; } cur+=diff*0.42; render(cur); requestAnimationFrame(tick); }
     function setTarget(v){ target=v; if(!animating){ animating=true; requestAnimationFrame(tick); } }
     function scrollToIndex(i){ i=Math.min(Math.max(i,0),N-1); window.scrollTo({top:stageTop()+stageTotal()*((i+DWELL/2)/N), behavior:'smooth'}); }
     function onScroll(){
       setTarget(toP(u()));
       var r=stage.getBoundingClientRect(); if(!(r.top<=0 && r.bottom>=window.innerHeight)) return;
       clearTimeout(idleTimer);
-      idleTimer=setTimeout(function(){ var t2=toP(u()), n=Math.round(t2); if(Math.abs(t2-n)>0.04) setTarget(n); },80);   /* settle visually, don't fight the user's scroll */
+      idleTimer=setTimeout(function(){ var t2=toP(u()), n=Math.round(t2); if(Math.abs(t2-n)>0.04 && Math.abs(t2-n)<0.35) setTarget(n); },220);   /* settle visually, don't fight the user's scroll */
     }
     window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',function(){ cur=target=toP(u()); render(cur); }); cur=target=toP(u()); render(cur);
     var prev=document.getElementById('carPrev'), next=document.getElementById('carNext');
@@ -1266,7 +1266,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
         if(idx2){ idx2.textContent=('0'+(best+1)).slice(-2); bar2.style.left=(best*25)+'%'; nm2.textContent=names2[best]; } };
       var stage2=document.querySelector('.carousel-stage'), touching=false, targetX=0, curX=0, anim=false, driven=false;
       var center=function(el){ return el.offsetLeft+el.offsetWidth/2-ring2.clientWidth/2; };
-      function tick2(){ var diff=targetX-curX; if(Math.abs(diff)<0.5){ curX=targetX; ring2.scrollLeft=curX; upd(); anim=false; return; } curX+=diff*0.32; ring2.scrollLeft=curX; upd(); requestAnimationFrame(tick2); }
+      function tick2(){ var diff=targetX-curX; if(Math.abs(diff)<0.5){ curX=targetX; ring2.scrollLeft=curX; upd(); anim=false; return; } curX+=diff*0.42; ring2.scrollLeft=curX; upd(); requestAnimationFrame(tick2); }
       function go(x){ targetX=x; if(!anim){ anim=true; curX=ring2.scrollLeft; requestAnimationFrame(tick2); } }
       ring2.addEventListener('touchstart',function(){ touching=true; anim=false; },{passive:true}); ring2.addEventListener('touchend',function(){ setTimeout(function(){ touching=false; },800); },{passive:true});
       ring2.addEventListener('scroll',function(){ if(!anim) upd(); },{passive:true});
