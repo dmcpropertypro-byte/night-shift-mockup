@@ -29,6 +29,7 @@
   --btn-ink:#1c1812;
   --brand-mark-bg:#1c1812;
   --day-display:block; --night-display:none;
+  --card-ink:#1c1812; --card-ink-2:#5a5346;
   --card-bg:linear-gradient(165deg,#ffffff,#f9f5ec); --card-line:rgba(35,28,16,0.24); --card-shadow-strong:0 40px 80px -30px rgba(35,28,16,0.45);
   --nav-bg:linear-gradient(180deg,#132338,#0f1d30); --nav-line:rgba(212,184,122,0.45); --nav-ink:#d9dfe9; --nav-ink-strong:#ffffff; --nav-logo-ring:rgba(240,220,168,0.5);
   --school-bg:#0f1f2e; --school-bg-2:#16304a; --school-ink:#f3efe6; --school-ink-2:#c9d1dc; --school-line:rgba(240,220,168,0.22); --school-accent:#f0dca8; --school-gift:rgba(255,255,255,0.04); --school-glow:rgba(212,184,122,0.22);
@@ -49,6 +50,7 @@
     --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
     --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
     --day-display:none; --night-display:block;
+    --card-ink:#f3efe6; --card-ink-2:#bfc4cf;
     --card-bg:linear-gradient(165deg,#1f3157,#15223d); --card-line:rgba(212,184,122,0.42); --card-shadow-strong:0 50px 100px -40px rgba(2,6,20,1);
     --nav-bg:linear-gradient(180deg,#f7f1e3,#eee5d0); --nav-line:rgba(124,95,38,0.45); --nav-ink:#3a3222; --nav-ink-strong:#1c1812; --nav-logo-ring:rgba(124,95,38,0.5);
     --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
@@ -68,6 +70,7 @@
   --media-overlay:linear-gradient(180deg, rgba(11,18,32,0) 50%, rgba(11,18,32,0.85) 100%);
   --grain-opacity:.35; --btn-ink:#0b0a06; --brand-mark-bg:#0b1220;
   --day-display:none; --night-display:block;
+  --card-ink:#f3efe6; --card-ink-2:#bfc4cf;
   --card-bg:linear-gradient(165deg,#1f3157,#15223d); --card-line:rgba(212,184,122,0.42); --card-shadow-strong:0 50px 100px -40px rgba(2,6,20,1);
   --nav-bg:linear-gradient(180deg,#f7f1e3,#eee5d0); --nav-line:rgba(124,95,38,0.45); --nav-ink:#3a3222; --nav-ink-strong:#1c1812; --nav-logo-ring:rgba(124,95,38,0.5);
   --school-bg:#efe6d2; --school-bg-2:#faf5ea; --school-ink:#1c1812; --school-ink-2:#4f4838; --school-line:rgba(124,95,38,0.30); --school-accent:#7d5f26; --school-gift:rgba(124,95,38,0.07); --school-glow:rgba(212,184,122,0.55);
@@ -371,6 +374,31 @@ nav.links a:hover{ color:var(--gold); }
   .stat .num{ font-size:36px; }
 }
 
+
+/* ---------- inverted feature plate (shared by Guarantee + Night School) ---------- */
+.plate-wrap{ padding:110px 0; }
+.plate{
+  position:relative; border-radius:22px; overflow:hidden; padding:72px 64px;
+  background:radial-gradient(900px 500px at 85% 0%, var(--school-glow), transparent 60%), linear-gradient(160deg, var(--school-bg-2), var(--school-bg));
+  border:1px solid var(--school-line); color:var(--school-ink);
+  box-shadow:0 60px 120px -50px rgba(2,6,20,.8), inset 0 1px 0 rgba(255,255,255,0.08);
+  --ink:var(--school-ink); --ink-2:var(--school-ink-2); --ink-3:var(--school-accent); --line:var(--school-line); --line-strong:var(--school-line); --panel:var(--school-gift); --panel-strong:var(--school-gift);
+}
+@media (max-width:640px){ .plate{ padding:44px 22px; } .plate-wrap{ padding:72px 0; } }
+.plate::before{ content:""; position:absolute; inset:0; pointer-events:none; opacity:.35;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.plate > *{ position:relative; }
+.plate .eyebrow{ color:var(--school-accent); }
+.plate .eyebrow::before{ background:linear-gradient(90deg,var(--school-accent),transparent); }
+.plate .section-head{ margin-bottom:48px; }
+.plate .section-head h2{ color:var(--school-ink); }
+.plate .chalk{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:var(--school-accent); opacity:.8; position:absolute; top:26px; right:32px; }
+@media (max-width:640px){ .plate .chalk{ position:static; display:block; margin-bottom:14px; } }
+.plate .assurance{ color:var(--school-ink-2); }
+.plate .term{ --ink:var(--card-ink); --ink-2:var(--card-ink-2); }
+.plate .term h3, .plate .term p{ color:var(--ink); } .plate .term p{ color:var(--ink-2); } .plate .term p b{ color:var(--ink); }
+.plate .terms::before{ display:none; }
+
 /* ---------- hero ---------- */
 .hero{ padding:80px 0 90px; position:relative; overflow:hidden; perspective:1400px; }
 .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:72px; align-items:center; }
@@ -607,8 +635,9 @@ footer.bottom nav a:hover{ color:var(--gold); }
   .orbit-arrow{ stroke-width:5; filter:none; }
   .fly.fly-mobile{ display:none; }
   /* demos → swipeable snap carousel with 3D neighbours */
-  .carousel-stage{ height:auto; } .carousel-sticky{ position:static; height:auto; padding-top:0; display:block; overflow:visible; perspective:none; }
-  .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .carousel-stage{ height:300vh; } .carousel-sticky{ position:sticky; top:72px; height:calc(100vh - 72px); padding-top:0; display:flex; flex-direction:column; align-items:stretch; justify-content:center; overflow:hidden; perspective:none; }
+  .ring{ width:100% !important; max-width:100%; min-width:0; }
+  .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:none; scroll-behavior:auto; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .ring::-webkit-scrollbar{ display:none; }
   .ring{ box-shadow:none !important; border:0; background:none; }
   .ring .svc{ flex:0 0 78vw; scroll-snap-align:center; position:relative; inset:auto; width:78vw; height:auto; margin:0 !important; pointer-events:auto !important; opacity:1 !important; transform-origin:center; transition:transform .25s ease, filter .25s ease; will-change:transform; }
@@ -777,8 +806,8 @@ footer.bottom nav a:hover{ color:var(--gold); }
   </div>
 </section>
 
-<section class="section section-alt" id="guarantee">
-  <div class="wrap">
+<section class="plate-wrap" id="guarantee">
+  <div class="wrap"><div class="plate"><span class="chalk">The Hidden-Value Guarantee · Read first</span>
     <div class="section-head">
       <div class="eyebrow">The Hidden-Value Guarantee</div>
       <h2>An offer designed to remove almost every reason to say no.</h2>
@@ -805,7 +834,7 @@ footer.bottom nav a:hover{ color:var(--gold); }
       <div class="assurance">Human approval where judgment matters</div>
       <div class="assurance">Documentation included</div>
     </div>
-  </div>
+  </div></div>
 </section>
 
 <section class="section">
@@ -1222,7 +1251,16 @@ footer.bottom nav a:hover{ color:var(--gold); }
           c.style.transform='perspective(900px) rotateY('+(-a*16).toFixed(2)+'deg) scale('+(1-Math.abs(a)*0.08).toFixed(3)+')'; c.style.filter='brightness('+(1-Math.abs(a)*0.28).toFixed(3)+')';
           c.classList.toggle('is-front',Math.abs(a)<0.3); if(Math.abs(dd)<bd){ bd=Math.abs(dd); best=i; } });
         if(idx2){ idx2.textContent=('0'+(best+1)).slice(-2); bar2.style.left=(best*25)+'%'; nm2.textContent=names2[best]; } };
-      ring2.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd(); }
+      ring2.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd();
+      /* vertical page scroll sweeps the cards left -> right while the section is pinned */
+      var stage2=document.querySelector('.carousel-stage'), touching=false, lastDrive=0;
+      ring2.addEventListener('touchstart',function(){ touching=true; },{passive:true}); ring2.addEventListener('touchend',function(){ setTimeout(function(){ touching=false; },600); },{passive:true});
+      var drive=function(){ if(!stage2||touching) return; var r=stage2.getBoundingClientRect(), total=r.height-window.innerHeight; if(total<=0) return;
+        var prog=Math.min(Math.max(-(r.top-72)/(total),0),1)*(cards2.length-1);
+        var i=Math.floor(prog), f=prog-i, a=cards2[i], b2=cards2[Math.min(i+1,cards2.length-1)];
+        var center=function(el){ return el.offsetLeft+el.offsetWidth/2-ring2.clientWidth/2; };
+        var target=center(a)+(center(b2)-center(a))*f; if(Math.abs(ring2.scrollLeft-target)>0.5){ ring2.scrollLeft=target; } };
+      window.addEventListener('scroll',drive,{passive:true}); drive(); }
     if('IntersectionObserver' in window && !reduce){
       var rv=document.querySelectorAll('.term,.console,.ring .svc,.bio-card,.workshop-card,.stat,.gift,.offers.fan .offer,.press .bar,.video-card');
       rv.forEach(function(el){ el.classList.add('reveal'); });
@@ -1268,11 +1306,10 @@ footer.bottom nav a:hover{ color:var(--gold); }
         }
         if (card.getAttribute('data-autoplay') !== 'true') return;
         var conn = navigator.connection || {};
-        var bigEnough  = window.matchMedia('(min-width: 900px)').matches;
         var motionOk   = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var cheapData  = !conn.saveData;
         var fastEnough = !conn.effectiveType || !/(^|-)2g$|^3g$/.test(conn.effectiveType);
-        if (!(bigEnough && motionOk && cheapData && fastEnough)) return;
+        if (!(motionOk && cheapData && fastEnough)) return;  /* phones autoplay muted, like the Pier Walk site */
         function start(){ attach(); video.muted = true; var p = video.play(); if (p && p.catch) p.catch(function(){}); }
         if (card.getBoundingClientRect().top < window.innerHeight * 1.5) { start(); return; }
         if (!('IntersectionObserver' in window)) return;
