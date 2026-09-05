@@ -644,10 +644,11 @@ footer.bottom nav a:hover{ color:var(--gold); }
   .orbit-arrow{ stroke-width:6; } .orbit-arrow-under{ stroke-width:10; } .orbit-flow{ stroke-width:2; }
   .fly.fly-mobile{ display:none; }
   /* demos → swipeable snap carousel with 3D neighbours */
-  .carousel-stage{ height:180vh; } .carousel-sticky{ position:sticky; top:64px; height:calc(100svh - 64px); padding:3svh 0 0; display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; overflow:hidden; perspective:none; }
-  .carousel-hint{ margin-bottom:6px; }
-  .ring{ padding-top:8px; padding-bottom:18px; touch-action:pan-x pan-y; overscroll-behavior-x:contain; }
+  .carousel-stage{ height:auto; } .carousel-sticky{ position:static; height:auto; padding:0; display:block; overflow:visible; perspective:none; }
+  .carousel-hint{ margin-bottom:6px; text-align:center; }
+  .ring{ padding-top:8px; padding-bottom:18px; touch-action:pan-x pan-y; overscroll-behavior-x:contain; scroll-snap-type:x proximity; }
   .ring{ width:100% !important; max-width:100%; min-width:0; }
+  .ring .svc{ scroll-snap-align:center; }
   .ring{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:none; scroll-behavior:auto; padding:14px 11vw 26px; width:auto; height:auto; transform:none !important; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .ring::-webkit-scrollbar{ display:none; }
   .ring{ box-shadow:none !important; border:0; background:none; }
@@ -1266,21 +1267,19 @@ footer.bottom nav a:hover{ color:var(--gold); }
           c.style.transform='perspective(900px) rotateY('+(-a*14).toFixed(2)+'deg) scale('+(1-Math.abs(a)*0.07).toFixed(3)+')'; c.style.opacity=(1-Math.abs(a)*0.45).toFixed(3); c.style.boxShadow='0 '+(18+22*(1-Math.abs(a))).toFixed(0)+'px '+(36+40*(1-Math.abs(a))).toFixed(0)+'px -20px rgba(0,0,0,'+(0.3+0.5*(1-Math.abs(a))).toFixed(2)+')';
           c.classList.toggle('is-front',Math.abs(a)<0.35); if(Math.abs(dd)<bd){ bd=Math.abs(dd); best=i; } });
         if(idx2){ idx2.textContent=('0'+(best+1)).slice(-2); bar2.style.left=(best*25)+'%'; nm2.textContent=names2[best]; } };
-      var stage2=document.querySelector('.carousel-stage'), touching=false, targetX=0, curX=0, anim=false, driven=false;
+      /* gentle auto-advance: as the strip travels up through the viewport the cards slide left -> right.
+         No pinning and the page scroll is never touched, so vertical swipes always just scroll the page.
+         Any touch on the strip hands control to the user for a couple of seconds. */
+      var untilTs=0, animF=false, tX=0, cX=0;
       var center=function(el){ return el.offsetLeft+el.offsetWidth/2-ring2.clientWidth/2; };
-      function tick2(){ var diff=targetX-curX; if(Math.abs(diff)<0.5){ curX=targetX; ring2.scrollLeft=curX; upd(); anim=false; return; } curX+=diff*0.42; ring2.scrollLeft=curX; upd(); requestAnimationFrame(tick2); }
-      function go(x){ targetX=x; if(!anim){ anim=true; curX=ring2.scrollLeft; requestAnimationFrame(tick2); } }
-      /* manual swipe: after the finger lifts, move the PAGE to the position that matches the card you landed on,
-         so scrolling up from card 1 or down from card 4 leaves the section right away (no trapped feeling) */
-      var syncTimer=null, syncing=false;
-      function nearestCard(){ var rr=ring2.getBoundingClientRect(), cx=rr.left+rr.width/2, best=0, bd=1e9; cards2.forEach(function(c,i){ var cr=c.getBoundingClientRect(), d=Math.abs(cr.left+cr.width/2-cx); if(d<bd){ bd=d; best=i; } }); return best; }
-      function syncPageToCard(){ if(!stage2) return; var total=stage2.offsetHeight-window.innerHeight; if(total<=0) return; var i=nearestCard(), top=stage2.getBoundingClientRect().top+window.scrollY; syncing=true; window.scrollTo({top: top+72+total*(i/(cards2.length-1)), behavior:'auto'}); targetX=curX=ring2.scrollLeft; setTimeout(function(){ syncing=false; touching=false; },120); }
-      ring2.addEventListener('touchstart',function(){ touching=true; anim=false; clearTimeout(syncTimer); },{passive:true});
-      ring2.addEventListener('touchend',function(){ clearTimeout(syncTimer); syncTimer=setTimeout(syncPageToCard,180); },{passive:true});
-      ring2.addEventListener('scroll',function(){ if(!anim) upd(); if(touching){ clearTimeout(syncTimer); syncTimer=setTimeout(syncPageToCard,180); } },{passive:true});
-      var drive=function(){ if(!stage2||touching||syncing) return; var r=stage2.getBoundingClientRect(), total=r.height-window.innerHeight; if(total<=0) return;
-        var prog=Math.min(Math.max(-(r.top-72)/total,0),1)*(cards2.length-1);
-        var i=Math.floor(prog), f=prog-i, a=cards2[i], b2=cards2[Math.min(i+1,cards2.length-1)];
+      function tick2(){ var d=tX-cX; if(Math.abs(d)<0.5){ cX=tX; ring2.scrollLeft=cX; upd(); animF=false; return; } cX+=d*0.2; ring2.scrollLeft=cX; upd(); requestAnimationFrame(tick2); }
+      function go(x){ tX=x; if(!animF){ animF=true; cX=ring2.scrollLeft; requestAnimationFrame(tick2); } }
+      ring2.addEventListener('touchstart',function(){ untilTs=Date.now()+2500; animF=false; },{passive:true});
+      ring2.addEventListener('touchmove',function(){ untilTs=Date.now()+2500; },{passive:true});
+      ring2.addEventListener('scroll',function(){ if(!animF) upd(); },{passive:true});
+      var drive=function(){ if(Date.now()<untilTs) return; var r=ring2.getBoundingClientRect(), vh=window.innerHeight;
+        var prog=Math.min(Math.max((vh*0.85 - r.top)/(vh*0.85 - vh*0.12 + r.height*0), 0), 1)*(cards2.length-1);   /* 0 when the strip enters at the bottom, 1 when it nears the top */
+        var i=Math.floor(prog), f=prog-i, a=cards2[Math.min(i,cards2.length-1)], b2=cards2[Math.min(i+1,cards2.length-1)];
         go(center(a)+(center(b2)-center(a))*f); };
       window.addEventListener('scroll',drive,{passive:true}); window.addEventListener('resize',upd); drive(); upd(); }
     if('IntersectionObserver' in window && !reduce){
